@@ -49,11 +49,43 @@ class ModelTrainer:
             'GradientBoostingRegressor':GradientBoostingRegressor()
             }
             
+            params={
+                "LinearRegression":{},
+                'KNeighborsRegressor':{
+                    'n_neighbors':[2,4,8,10]
+                },
+                "DecisionTreeRegressor": {
+                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    # 'splitter':['best','random'],
+                    # 'max_features':['sqrt','log2'],
+                },
+                
+                "RandomForestRegressor":{
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                "XGBRegressor":{
+                    'learning_rate':[.1,.01,.05,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                
+                "AdaBoostRegressor":{
+                    'learning_rate':[.1,.01,0.5,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                "GradientBoostingRegressor":{
+                    'learning_rate':[.1,.01,.05,.001],
+                    'subsample':[0.6,0.7,0.75,0.8,0.85,0.9],
+                    'n_estimators': [8,16,32,64,128,256]
+                }
+                
+            }
+            
             models_report = evaluate_model(X_train=X_train,
                                            X_test = X_test,
                                            y_train = y_train,
                                            y_test = y_test,
-                                           models=models)
+                                           models=models,
+                                           params = params)
             
             best_model_score = max( sorted( models_report.values() ) )
             best_model_name = list(models_report.keys())[
@@ -82,7 +114,7 @@ class ModelTrainer:
             predicted = best_model.predict(X_test)
             #r-squared error
             r_square = r2_score(y_test,predicted)
-            
+            print(best_model_name,r2_score)
             return r_square            
             
         except Exception as e:

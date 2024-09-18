@@ -89,7 +89,8 @@ class DataTransformation:
                 'lunch',
                 'test_preparation_course'
                 ]
-
+            logging.info(f'Numerical features : {numerical_feature}')
+            logging.info(f'Categorica features : {categorical_feature}')
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df = train_df[target_column_name]
             
